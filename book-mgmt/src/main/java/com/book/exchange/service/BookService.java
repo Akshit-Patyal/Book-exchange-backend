@@ -29,29 +29,16 @@ public class BookService {
 	public Page<Book> searchBooksByCriteria(BookRequest bookRequest, Pageable pageable) {
 
 		if (StringUtils.hasText(bookRequest.getTitle())) {
-			return bookRepository.findByTitle(bookRequest.getTitle(), pageable);
+			return bookRepository.findByTitleContainingIgnoreCase(bookRequest.getTitle(), pageable);
 		}
 
-		if (StringUtils.hasText(bookRequest.getAuthor())) {
-			return bookRepository.findByAuthor(bookRequest.getAuthor(), pageable);
+		else if (StringUtils.hasText(bookRequest.getAuthor())) {
+			return bookRepository.findByAuthorContainingIgnoreCase(bookRequest.getAuthor(), pageable);
 		}
 
-		if (StringUtils.hasText(bookRequest.getGenre())) {
-			return bookRepository.findByGenre(bookRequest.getGenre(), pageable);
+		else if (StringUtils.hasText(bookRequest.getGenre())) {
+			return bookRepository.findByGenreContainingIgnoreCase(bookRequest.getGenre(), pageable);
 		}
-
-		if (StringUtils.hasText(bookRequest.getCondition())) {
-			return bookRepository.findByBookCondition(bookRequest.getCondition(), pageable);
-		}
-
-		if (StringUtils.hasText(bookRequest.getLocation())) {
-			return bookRepository.findByLocation(bookRequest.getLocation(), pageable);
-		}
-
-		if (bookRequest.isAvailable() == false || bookRequest.isAvailable() == true) {
-			return bookRepository.findByIsAvailable(bookRequest.isAvailable(), pageable);
-		}
-
 		return null;
 	}
 
@@ -123,8 +110,12 @@ public class BookService {
 		if (StringUtils.hasText(bookRequest.getGenre())) {
 			book.setGenre(bookRequest.getGenre());
 		}
-		if (bookRequest.isAvailable()) {
-			book.setAvailable(bookRequest.isAvailable());
+		if (bookRequest.isAvailable() == true) {
+			book.setAvailable(true);
+		}
+		
+		if (bookRequest.isAvailable() == false) {
+			book.setAvailable(false);
 		}
 
 		if (StringUtils.hasText(bookRequest.getCondition())) {

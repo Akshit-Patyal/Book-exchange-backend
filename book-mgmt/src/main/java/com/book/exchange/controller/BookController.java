@@ -74,7 +74,7 @@ public class BookController {
 	@PostMapping("/search-books")
 	@PreAuthorize("hasAuthority('USER')")
 	public ResponseEntity<?> searchBooksByCriteria(@RequestBody BookRequest bookRequest, 
-			@RequestParam(defaultValue = "1") int page, 
+			@RequestParam(defaultValue = "0") int page, 
 			@RequestParam(defaultValue = "5") int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
